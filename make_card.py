@@ -28,7 +28,8 @@ def card(post, out):
     y = 540 - (len(lines) - 1) * 48
     for line in lines:
         d.text((540, y), line, font=f, fill=FG, anchor="mm"); y += 96
-    d.rounded_rectangle((440, y - 30, 640, y - 18), 6, fill=ACCENT)   # 로고처럼 주황 밑줄
+    w = max(d.textlength(l, font=f) for l in lines)   # 로고처럼 제목 너비만큼 주황 밑줄
+    d.rounded_rectangle((540 - w / 2, y - 30, 540 + w / 2, y - 18), 6, fill=ACCENT)
     d.text((540, 800), "onmaeul.co.kr  |  1551-6188", font=ImageFont.truetype(FONT, 34), fill=FG, anchor="mm")
     im.save(out)
 
