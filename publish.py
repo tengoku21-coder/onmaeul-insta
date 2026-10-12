@@ -1,5 +1,5 @@
 """미게시 1건을 Instagram에 게시하고 posts.csv에 날짜 기록. 토큰 없으면 dry-run(파일 미수정)."""
-import csv, os, pathlib, datetime, requests
+import csv, os, pathlib, datetime, time, requests
 
 ROOT = pathlib.Path(__file__).parent
 CSV = ROOT / "posts.csv"
@@ -13,9 +13,15 @@ def caption(p):
 def publish(p):
     url = f"{BASE}/images/{int(p['id']):03d}.png"
     r = requests.post(f"{API}/{IG_ID}/media", data={"image_url": url, "caption": caption(p), "access_token": TOKEN}, timeout=60)
-    r.raise_for_status()
-    r = requests.post(f"{API}/{IG_ID}/media_publish", data={"creation_id": r.json()["id"], "access_token": TOKEN}, timeout=60)
-    r.raise_for_status()
+    assert r.ok, r.text
+    cid = r.json()["id"]
+    for _ in range(12):  # 이미지 처리 대기 (최대 60초)
+        s = requests.get(f"{API}/{cid}", params={"fields": "status_code", "access_token": TOKEN}, timeout=60).json()
+        if s.get("status_code") == "FINISHED": break
+        assert s.get("status_code") != "ERROR", s
+        time.sleep(5)
+    r = requests.post(f"{API}/{IG_ID}/media_publish", data={"creation_id": cid, "access_token": TOKEN}, timeout=60)
+    assert r.ok, r.text
     print("published", r.json())
 
 if __name__ == "__main__":
