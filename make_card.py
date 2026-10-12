@@ -10,12 +10,14 @@ TAG = {"입주민": "입주민에게", "관리소장": "관리소장님께", "�
 def card(post, out):
     im = Image.new("RGB", (1080, 1080), BG)
     d = ImageDraw.Draw(im)
-    d.text((80, 90), TAG.get(post["target"], ""), font=ImageFont.truetype(FONT, 40), fill=ACCENT)
-    f = ImageFont.truetype(FONT, 76)
-    y = 220
-    for line in textwrap.wrap(post["title"], 13):
-        d.text((80, y), line, font=f, fill=FG); y += 100
-    d.text((80, 940), "onmaeul.co.kr  |  1551-6188", font=ImageFont.truetype(FONT, 36), fill=ACCENT)
+    # 프로필 그리드는 3:4로 좌우가 잘리므로 가운데 정렬 + 중앙 760px 안에 배치
+    d.text((540, 300), TAG.get(post["target"], ""), font=ImageFont.truetype(FONT, 40), fill=ACCENT, anchor="mm")
+    f = ImageFont.truetype(FONT, 72)
+    lines = textwrap.wrap(post["title"], 10)
+    y = 540 - (len(lines) - 1) * 48
+    for line in lines:
+        d.text((540, y), line, font=f, fill=FG, anchor="mm"); y += 96
+    d.text((540, 800), "onmaeul.co.kr  |  1551-6188", font=ImageFont.truetype(FONT, 34), fill=ACCENT, anchor="mm")
     im.save(out)
 
 if __name__ == "__main__":
