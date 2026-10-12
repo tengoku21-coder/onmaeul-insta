@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 ROOT = pathlib.Path(__file__).parent
 FONT = "C:/Windows/Fonts/malgunbd.ttf"   # ponytail: 윈도우 전용, 리눅스면 NanumGothicBold.ttf 경로로 교체
-BG, FG, ACCENT = "#0B3D2E", "#FFFFFF", "#7CE0A6"
+BG, FG, ACCENT = "#F7F1E3", "#4F5F3F", "#E88D32"   # 프로필 로고 색: 베이지/올리브그린/주황
 TAG = {"입주민": "입주민에게", "관리소장": "관리소장님께", "입대의": "입주자대표님께"}
 
 def wrap(title, width=10):
@@ -28,7 +28,8 @@ def card(post, out):
     y = 540 - (len(lines) - 1) * 48
     for line in lines:
         d.text((540, y), line, font=f, fill=FG, anchor="mm"); y += 96
-    d.text((540, 800), "onmaeul.co.kr  |  1551-6188", font=ImageFont.truetype(FONT, 34), fill=ACCENT, anchor="mm")
+    d.rounded_rectangle((440, y - 30, 640, y - 18), 6, fill=ACCENT)   # 로고처럼 주황 밑줄
+    d.text((540, 800), "onmaeul.co.kr  |  1551-6188", font=ImageFont.truetype(FONT, 34), fill=FG, anchor="mm")
     im.save(out)
 
 if __name__ == "__main__":
