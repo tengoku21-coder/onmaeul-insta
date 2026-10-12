@@ -1,0 +1,18 @@
+name: instagram-reel
+on:
+  workflow_dispatch:
+    inputs:
+      video:   { description: "videos/ 안 파일 경로", required: true }
+      caption: { description: "캡션", required: true }
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install requests
+      - run: python reel.py "${{ inputs.video }}" "${{ inputs.caption }}"
+        env:
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
