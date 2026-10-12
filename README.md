@@ -5,11 +5,13 @@
 3. 저장소 Settings → Secrets 에 `IG_USER_ID`, `IG_TOKEN` 등록
 4. Actions 탭 → instagram-post → Run workflow 로 1회 수동 실행 → 인스타 확인
 
-## 토큰 발급 (1회)
-- Instagram 프로페셔널(비즈니스) 전환 → Facebook 페이지 연결
-- developers.facebook.com 앱 생성 → Graph API 탐색기 → 권한 `instagram_basic, instagram_content_publish, pages_show_list`
-- 단기 토큰 → 장기 토큰(60일) 교환: `GET /oauth/access_token?grant_type=fb_exchange_token&client_id=..&client_secret=..&fb_exchange_token=..`
-- IG_USER_ID: `GET /me/accounts` → page id → `GET /{page-id}?fields=instagram_business_account`
-- 60일마다 토큰 갱신 필요. 만료되면 Actions 실패 메일 옴 → 그때 갱신해서 Secret 교체.
+## 토큰 발급 (1회, Instagram 로그인 API — Facebook 페이지 불필요)
+1. Instagram 앱 → 설정 → 계정 유형 → 프로페셔널(비즈니스) 전환
+2. developers.facebook.com → 내 앱 → 앱 만들기 → 사용 사례 **"Instagram"** 선택 → 앱 유형 비즈니스
+3. 대시보드 → Instagram → **API setup with Instagram login**
+   - 1단계 "Generate access tokens" → **Add account** → 인스타 계정으로 로그인·승인
+   - 계정 옆 **Generate token** 클릭 → 뜨는 값이 `IG_TOKEN` (60일 장기 토큰), 계정 옆 숫자가 `IG_USER_ID`
+4. 등록: `gh secret set IG_USER_ID`, `gh secret set IG_TOKEN`
+5. 60일마다 3단계 Generate token 다시 → Secret 교체. 만료되면 Actions 실패 메일 옴.
 
 로컬 확인: `py publish.py` (토큰 없으면 캡션만 출력, 파일 변경 없음)

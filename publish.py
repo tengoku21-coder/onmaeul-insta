@@ -5,7 +5,7 @@ ROOT = pathlib.Path(__file__).parent
 CSV = ROOT / "posts.csv"
 IG_ID, TOKEN = os.getenv("IG_USER_ID"), os.getenv("IG_TOKEN")
 BASE = os.getenv("IMAGE_BASE_URL") or f"https://raw.githubusercontent.com/{os.getenv('GITHUB_REPOSITORY', 'USER/REPO')}/main"
-API = "https://graph.facebook.com/v21.0"
+API = "https://graph.instagram.com/v21.0"
 
 def caption(p):
     return f"{p['title']}\n\n{p['body']}\n\n상담 신청은 프로필 링크 ▶ onmaeul.co.kr\n\n{p['hashtags']}"
