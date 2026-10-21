@@ -1,7 +1,7 @@
 name: instagram-post
 on:
   schedule:
-    - cron: "17 0 * * *"   # 09:17 KST (정각은 GitHub 큐가 밀려 피함)
+    - cron: "17 20 * * *"   # 05:17 KST (GitHub 지연 1~5h → 실제 오전 게시)
   workflow_dispatch:
 jobs:
   post:

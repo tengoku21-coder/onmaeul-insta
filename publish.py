@@ -31,6 +31,6 @@ if __name__ == "__main__":
     if not TOKEN:
         print("[dry-run]\n" + caption(todo)); raise SystemExit
     publish(todo)
-    todo["posted"] = datetime.date.today().isoformat()
+    todo["posted"] = (datetime.datetime.utcnow() + datetime.timedelta(hours=9)).date().isoformat()  # KST
     with open(CSV, "w", encoding="utf-8", newline="") as f:
         w = csv.DictWriter(f, fieldnames=rows[0].keys()); w.writeheader(); w.writerows(rows)
